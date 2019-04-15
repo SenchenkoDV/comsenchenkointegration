@@ -28,6 +28,7 @@ public class IntegrationConfig {
                 .handle(Http.outboundGateway("http://soap5:8080/temperature")
                         .expectedResponseType(String.class))
                 .transform(t -> XML.toJSONObject(t.toString()).getJSONObject("SOAP-ENV:Envelope").getJSONObject("SOAP-ENV:Body").toString())
+                .headerFilter("Content-Type")
                 .enrichHeaders(h -> h.header("Content-Type", "application/json; charset=utf-8"))
                 .get();
     }
